@@ -13,26 +13,32 @@ This repo is for implementation of:
 Please be careful for the `batch_size` option: adjust it depending on your GPU memory. \
 Learning rate may not be optimized that much... (Processing) \
 
-### Baseline model training and validation (ResNet50)
+#### Baseline model training and validation (ResNet50)
 ```
 python main_baseline.py --batch_size 128 --lr 0.75 --epochs 600
 ```
 
-### Supervised Contrastive model: Stage 1(embedding + projection) training and validation
+#### Supervised Contrastive model: Stage 1(embedding + projection) training and validation
 ```
 python main_embed.py --batch_size 128 --lr 0.75 --epochs 500
 ```
 
-### Supervised Contrastive model: Stage 2(classifier) training and validation
+#### Supervised Contrastive model: Stage 2(classifier) training and validation
 ```
 python main_linear.py --batch_size 128 --lr 1 --epochs 100
 ```
+
+## Dataset
+CIFAR10 for default, more dataset experiment coming soon
 
 ## Augmentation
 [AutoAugment](https://arxiv.org/abs/1805.09501) is set by default. You can change it to manual by giving option:
 ```
 --augment Basic
 ```
+
+## Performance result
+(Coming Soon)
 
 ## References
 [1] Supervised Contrastive Learning: [Paper](https://arxiv.org/abs/2004.11362) \
