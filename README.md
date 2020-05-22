@@ -25,7 +25,7 @@ python main_embed.py --batch_size 128 --lr 0.75 --epochs 500
 
 ### Supervised Contrastive model: Stage 2(classifier) training and validation
 ```
-python main_embed.py --batch_size 128 --lr 1 --epochs 100
+python main_linear.py --batch_size 128 --lr 1 --epochs 100
 ```
 
 ## Augmentation
