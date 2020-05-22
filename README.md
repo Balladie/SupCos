@@ -29,11 +29,11 @@ python main_linear.py --batch_size 128 --lr 1 --epochs 100
 ```
 
 ## Augmentation
-[AutoAugment](https://arxiv.org/abs/1805.09501) by default. you can change it to manual by giving option:
+[AutoAugment](https://arxiv.org/abs/1805.09501) is set by default. You can change it to manual by giving option:
 ```
 --augment Basic
 ```
 
 ## References
-[1] Supervised Contrastive Learning: [Paper](https://arxiv.org/abs/2004.11362)
+[1] Supervised Contrastive Learning: [Paper](https://arxiv.org/abs/2004.11362) \
 [2] AutoAugment: [Github](https://github.com/4uiiurz1/pytorch-auto-augment)
