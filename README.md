@@ -10,20 +10,20 @@ This repo is for implementation of:
 - CUDA 10.0, cuDNN 7.5.1
 
 ## How to use
-Please be careful for the `batch_size` option: adjust it depending on your GPU memory.
-Learning rate may not be optimized that much... (Processing)
+Please be careful for the `batch_size` option: adjust it depending on your GPU memory. \
+Learning rate may not be optimized that much... (Processing) \
 
-** Baseline model training and validation (ResNet50) **
+### Baseline model training and validation (ResNet50)
 ```
 python main_baseline.py --batch_size 128 --lr 0.75 --epochs 600
 ```
 
-** Supervised Contrastive model: Stage 1(embedding + projection) training and validation **
+### Supervised Contrastive model: Stage 1(embedding + projection) training and validation
 ```
 python main_embed.py --batch_size 128 --lr 0.75 --epochs 500
 ```
 
-** Supervised Contrastive model: Stage 2(classifier) training and validation **
+### Supervised Contrastive model: Stage 2(classifier) training and validation
 ```
 python main_embed.py --batch_size 128 --lr 1 --epochs 100
 ```
