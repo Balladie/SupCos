@@ -38,7 +38,10 @@ CIFAR10 for default, more dataset experiment coming soon
 ```
 
 ## Performance result
-(Coming Soon)
+Training result on stage1 model (encoder + projection layer)
+Got 92%+ top-1 accuracy on CIFAR10 dataset till now, still tuning for best result... (Not completed yet)
+![ex_screenshot](./screenshot/train_stage1_loss.png)
+
 
 ## References
 [1] Supervised Contrastive Learning: [Paper](https://arxiv.org/abs/2004.11362) \
