@@ -38,8 +38,8 @@ CIFAR10 for default, more dataset experiment coming soon
 ```
 
 ## Performance result
-Training result on stage1 model (encoder + projection layer)
-Got 92%+ top-1 accuracy on CIFAR10 dataset till now, still tuning for best result... (Not completed yet)
+Training result on stage1 model (encoder + projection layer) \
+Got 92%+ top-1 accuracy on CIFAR10 dataset till now, still tuning for best result... (Not completed yet) \
 ![ex_screenshot](./screenshot/train_loss_stage1.jpg)
 
 
