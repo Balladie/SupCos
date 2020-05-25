@@ -1,5 +1,4 @@
 # SupCos
-Validate unfinished
 
 This repo is for implementation of:
 - Supervised Contrastive Learning: [Paper](https://arxiv.org/abs/2004.11362)
@@ -15,7 +14,7 @@ Learning rate may not be optimized that much... (Processing) \
 
 #### Baseline model training and validation (ResNet50)
 ```
-python main_baseline.py --batch_size 128 --lr 0.75 --epochs 600
+python main_baseline.py --batch_size 128 --lr 0.6 --epochs 600
 ```
 
 #### Supervised Contrastive model: Stage 1(embedding + projection) training and validation
@@ -38,9 +37,18 @@ CIFAR10 for default, more dataset experiment coming soon
 ```
 
 ## Performance result
-Training result on stage1 model (encoder + projection layer) \
-Got 92%+ top-1 accuracy on CIFAR10 dataset till now, still tuning for best result... (Not completed yet) \
-![ex_screenshot](./screenshot/train_loss_stage1.jpg)
+Training result on stage1 model : ResNet50 encoder + projection layer) \
+I ran two seperate sequence learning for stage1 model, and then trained linear classifier. \
+\
+- First learning for stage1: Lr=0.6 with cosine annealing, epochs=300, SGD optimizer \
+![ex_screenshot](./screenshot/stage1_lr_first.jpg)
+![ex_screenshot](./screenshot/stage1_train_loss_first.jpg)
+- Second learning for stage1: Lr=0.1 with cosine annealing, epochs=300, SGD optimizer \
+![ex_screenshot](./screenshot/stage1_lr_second.jpg)
+![ex_screenshot](./screenshot/stage1_train_loss_second.jpg)
+\
+- Training for stage2 linear classifier: Lr=5(but this seems not that good value, will be updated soon) with cosine annealing, epochs=100, SGD optimizer
+Got **95.4%** top-1 accuracy on CIFAR10 dataset till now, still tuning for best result (96%+) \
 
 
 ## References
