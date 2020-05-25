@@ -17,13 +17,13 @@ from network import SupConResNet50
 from loss import SupConLoss
 from data import data_loader_stage1
 from optimizer import load_optimizer, get_lr_scheduler
-from utils import AverageMeter, accuracy, save_checkpoint, save_state_file, initialize_dir, save_model
+from utils import AverageMeter, accuracy, save_checkpoint, initialize_dir, save_model
 
 def arg_parser():
     parser = argparse.ArgumentParser(description='arguments for CIFAR10 baseline training')
 
-    parser.add_argument('--batch_size', default=128, type=int, help='batch size')
-    parser.add_argument('--epochs', default=750, type=int, help='epochs')
+    parser.add_argument('--batch_size', default=64, type=int, help='batch size')
+    parser.add_argument('--epochs', default=300, type=int, help='epochs')
 
     parser.add_argument('--dataset', default='cifar10', type=str, help='dataset')
     parser.add_argument('--num_workers', default=4, type=int, help='number of workers for data')
@@ -31,16 +31,19 @@ def arg_parser():
     parser.add_argument('--augment', default='AutoAugment', type=str, help='method for data augmentation')
 
     parser.add_argument('--optimizer', default='SGD', type=str, help='optimizer')
-    parser.add_argument('--lr', default=0.75, type=float, help='learning rate')
+    parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
     parser.add_argument('--momentum', default=0.9, type=float, help='momentum for optimizer')
     parser.add_argument('--weight_decay', default=1e-4, type=float, help='weight decay for optimizer')
     parser.add_argument('--lr_decay_rate', default=0.1, type=float, help='decay rate of learning rate')
     parser.add_argument('--lr_scheduler', default='cosine', type=str, help='scheduler of learning rate')
-    parser.add_argument('--eta_min', default=0.75**3, type=float, help='eta_min for cosine optimizer')
+    parser.add_argument('--eta_min', default=0.1**3, type=float, help='eta_min for cosine optimizer')
+    parser.add_argument('--gamma', default=0.96, type=float, help='gamma for exp lr scheduler')
+    parser.add_argument('--tau', default=0.07, type=float, help='temperature parameter for SupConLoss')
 
     parser.add_argument('--checkpoint_freq', default=40, type=str, help='checkpoint frequency')
     parser.add_argument('--print_freq', default=10, type=str, help='print frequency')
     parser.add_argument('--log_dir', default='./tensorboard/log', type=str, help='directory for log file')
+    parser.add_argument('--load_pth', default='', type=str, help='directory for loading model')
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     parser.add_argument('--device', default=device, type=str, help='default device for running torch')
@@ -57,10 +60,16 @@ def load_model(args):
         #model = nn.DataParallel(model)
         cudnn.benchmark = True
 
+    if args.load_pth != '':
+        #pth = torch.load('model_trained_embed.pth')
+        pth = torch.load(args.load_pth)
+        state_dict = pth['model']
+        model.load_state_dict(state_dict)
+
     return model
 
 def load_loss(args):
-    return SupConLoss().cuda() if args.device == 'cuda' else SupConLoss()
+    return SupConLoss(tau=args.tau).cuda() if args.device == 'cuda' else SupConLoss(tau=args.tau)
     #return nn.CrossEntropyLoss()
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
@@ -153,14 +162,12 @@ if __name__ == '__main__':
         summary_writer.add_text('train_loss', str(train_loss), epoch+1)
 
         if epoch % args.checkpoint_freq == 0:
-            save_state_file(model, optimizer, epoch+1, './checkpoint/' + f'ckpt_epoch_{epoch+1}.pth', args)
+            save_model(model, optimizer, epoch+1, './checkpoint/' + f'ckpt_epoch_{epoch+1}.pth', args)
 
         lr_scheduler.step()
 
     print(f"Total Elapsed time: {time.time() - end}")
 
-    #save_state_dict(model, optimizer, epoch+1, 'state_trained_embed.pth', args)
-    #torch.save(model.state_dict(), 'model_trained_embed.pth')
     save_model(model, optimizer, args.epochs, 'model_trained_embed.pth', args)
 
     summary_writer.close()

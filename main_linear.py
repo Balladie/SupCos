@@ -16,12 +16,12 @@ from network import SupConResNet50, SupConLinear
 from loss import SupConLoss
 from data import data_loader
 from optimizer import load_optimizer, get_lr_scheduler
-from utils import AverageMeter, accuracy, save_checkpoint, save_state_file, initialize_dir
+from utils import AverageMeter, accuracy, save_checkpoint, save_model, initialize_dir
 
 def arg_parser():
     parser = argparse.ArgumentParser(description='arguments for CIFAR10 baseline training')
 
-    parser.add_argument('--batch_size', default=128, type=int, help='batch size')
+    parser.add_argument('--batch_size', default=64, type=int, help='batch size')
     parser.add_argument('--epochs', default=100, type=int, help='epochs')
 
     parser.add_argument('--dataset', default='cifar10', type=str, help='dataset')
@@ -30,16 +30,17 @@ def arg_parser():
     parser.add_argument('--augment', default='AutoAugment', type=str, help='method for data augmentation')
 
     parser.add_argument('--optimizer', default='SGD', type=str, help='optimizer')
-    parser.add_argument('--lr', default=0.75, type=float, help='learning rate')
+    parser.add_argument('--lr', default=5, type=float, help='learning rate')
     parser.add_argument('--momentum', default=0.9, type=float, help='momentum for optimizer')
     parser.add_argument('--weight_decay', default=1e-4, type=float, help='weight decay for optimizer')
     parser.add_argument('--lr_decay_rate', default=0.1, type=float, help='decay rate of learning rate')
     parser.add_argument('--lr_scheduler', default='cosine', type=str, help='scheduler of learning rate')
-    parser.add_argument('--eta_min', default=0.75**3, type=float, help='eta_min for cosine optimizer')
+    parser.add_argument('--eta_min', default=0.75**2, type=float, help='eta_min for cosine optimizer')
+    parser.add_argument('--gamma', default=0.96, type=float, help='gamma for exp lr scheduler')
 
     parser.add_argument('--checkpoint_freq', default=40, type=str, help='checkpoint frequency')
     parser.add_argument('--print_freq', default=10, type=str, help='print frequency')
-    parser.add_argument('--log_dir', default='./tensorboard/log', type=str, help='directory for log file')
+    parser.add_argument('--log_dir', default='./tensorboard/log_linear', type=str, help='directory for log file')
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     parser.add_argument('--device', default=device, type=str, help='default device for running torch')
@@ -196,27 +197,27 @@ if __name__ == '__main__':
         print('[Validate] val_acc:', val_acc)
 
         # tensorboardX
-        summary_writer.add_scalar('lr', optimizer.param_groups[0]['lr'], epoch+1)
-        summary_writer.add_scalar('train_loss', train_loss, epoch+1)
-        summary_writer.add_scalar('train_acc', train_acc, epoch+1)
-        summary_writer.add_scalar('val_loss', val_loss, epoch+1)
-        summary_writer.add_scalar('val_acc', val_acc, epoch+1)
-        summary_writer.add_text('lr', str(optimizer.param_groups[0]['lr']), epoch+1)
-        summary_writer.add_text('train_loss', str(train_loss), epoch+1)
-        summary_writer.add_text('train_acc', str(train_acc), epoch+1)
-        summary_writer.add_text('val_loss', str(val_loss), epoch+1)
-        summary_writer.add_text('val_acc', str(val_acc), epoch+1)
+        summary_writer.add_scalar('lr_linear', optimizer.param_groups[0]['lr'], epoch+1)
+        summary_writer.add_scalar('train_loss_linear', train_loss, epoch+1)
+        summary_writer.add_scalar('train_acc_linear', train_acc, epoch+1)
+        summary_writer.add_scalar('val_loss_linear', val_loss, epoch+1)
+        summary_writer.add_scalar('val_acc_linear', val_acc, epoch+1)
+        summary_writer.add_text('lr_linear', str(optimizer.param_groups[0]['lr']), epoch+1)
+        summary_writer.add_text('train_loss_linear', str(train_loss), epoch+1)
+        summary_writer.add_text('train_acc_linear', str(train_acc), epoch+1)
+        summary_writer.add_text('val_loss_linear', str(val_loss), epoch+1)
+        summary_writer.add_text('val_acc_linear', str(val_acc), epoch+1)
 
         best_acc = max(best_acc, val_acc)
 
         if epoch % args.checkpoint_freq == 0:
-            save_state_file(model_linear, optimizer, epoch+1, './checkpoint/' + f'ckpt_epoch_{epoch+1}.pth', args)
+            save_model(model_linear, optimizer, epoch+1, './checkpoint/' + f'ckpt_linear_epoch_{epoch+1}.pth', args)
 
         lr_scheduler.step()
 
     print(f"Total Elapsed time: {time.time() - end}")
     print('Best accuracy:', best_acc)
 
-    save_state_file(model_linear, optimizer, epoch+1, 'trained_final_supcos.pth', args)
+    save_model(model_linear, optimizer, epoch+1, 'trained_final_supcos.pth', args)
 
     summary_writer.close()

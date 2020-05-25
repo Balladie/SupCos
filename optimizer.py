@@ -12,6 +12,8 @@ def load_optimizer(args, model):
 def get_lr_scheduler(args, optimizer):
     if args.lr_scheduler == 'cosine':
         return optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs, eta_min=args.eta_min)
+    elif args.lr_scheduler == 'exp':
+        return optim.lr_scheduler.ExponentialLR(optimizer, gamma=args.gamma)
     else:
         raise ValueError("No such lr scheduler is set.")
 

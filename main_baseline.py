@@ -16,13 +16,13 @@ import numpy as np
 import network
 from data import data_loader
 from optimizer import *
-from utils import AverageMeter, accuracy, save_checkpoint, save_state_file, initialize_dir
+from utils import AverageMeter, accuracy, save_checkpoint, save_model, initialize_dir
 
 def arg_parser():
     parser = argparse.ArgumentParser(description='arguments for CIFAR10 baseline training')
 
     parser.add_argument('--batch_size', default=128, type=int, help='batch size')
-    parser.add_argument('--epochs', default=3, type=int, help='epochs')
+    parser.add_argument('--epochs', default=500, type=int, help='epochs')
 
     parser.add_argument('--dataset', default='cifar10', type=str, help='dataset')
     parser.add_argument('--num_workers', default=4, type=int, help='number of workers for data')
@@ -39,7 +39,7 @@ def arg_parser():
 
     parser.add_argument('--checkpoint_freq', default=40, type=str, help='checkpoint frequency')
     parser.add_argument('--print_freq', default=10, type=str, help='print frequency')
-    parser.add_argument('--log_dir', default='./tensorboard/log', type=str, help='directory for log file')
+    parser.add_argument('--log_dir', default='./tensorboard/log_base', type=str, help='directory for log file')
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     parser.add_argument('--device', default=device, type=str, help='default device for running torch')
@@ -204,13 +204,13 @@ if __name__ == '__main__':
         best_acc = max(best_acc, val_acc)
 
         if (epoch+1) % args.checkpoint_freq == 0:
-            save_state_file(model, optimizer, epoch+1, './checkpoint/' + f'ckpt_epoch_{epoch+1}.pth', args)
+            save_model(model, optimizer, epoch+1, './checkpoint/' + f'ckpt_epoch_{epoch+1}.pth', args)
 
         lr_scheduler.step()
 
     print(f"Total Elapsed time: {time.time() - end}")
     print('Best accuracy:', best_acc)
 
-    save_state_file(model, optimizer, epoch+1, 'trained_final.pth', args)
+    save_model(model, optimizer, epoch+1, 'trained_final.pth', args)
 
     summary_writer.close()

@@ -36,4 +36,4 @@ class SupConLoss(nn.Module):
         mask_sign = mask_sign * torch.log((inner_prod_term / mom).T)
         mask_sign = -(mask_sign.T / (2*Ny_tilda - 1))
 
-        return sum(mask_sign).mean()*2
+        return sum(mask_sign).mean()

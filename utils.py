@@ -40,16 +40,6 @@ def accuracy(output, target, topk=(1,)):
 def save_checkpoint(model, filename='checkpoint.pth'):
     torch.save(model.state_dict(), filename)
 
-def save_state_file(model, optimizer, epoch, filepath, args):
-    print("... Saving state file ...")
-    state = {
-            'state_dict': model.state_dict(),
-            'epoch': epoch,
-            'optimizer': optimizer,
-            'args': args
-            }
-    torch.save(state, filepath)
-
 def initialize_dir(path):
     if os.path.isdir(path):
         shutil.rmtree(path)
