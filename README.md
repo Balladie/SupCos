@@ -38,7 +38,7 @@ CIFAR10 for default, more dataset experiment coming soon
 
 ## Performance result
 Training result on stage1 model : ResNet50 encoder + projection layer) \
-I ran two seperate sequence learning for stage1 model, and then trained linear classifier. \
+I ran two seperate sequence learning for stage1 model, and then trained linear classifier.
 
 - First learning for stage1: Lr=0.6 with cosine annealing, epochs=300, SGD optimizer \
 ![ex_screenshot](./screenshot/stage1_lr_first.png)
@@ -47,8 +47,8 @@ I ran two seperate sequence learning for stage1 model, and then trained linear c
 ![ex_screenshot](./screenshot/stage1_lr_second.png)
 ![ex_screenshot](./screenshot/stage1_train_loss_second.png)
 \
-- Training for stage2 linear classifier: Lr=5(but this seems not that good value, will be updated soon) with cosine annealing, epochs=100, SGD optimizer
-Got **95.4%** top-1 accuracy on CIFAR10 dataset till now, still tuning for best result (96%+) \
+- Training for stage2 linear classifier: Lr=5(but this seems not that good value, will be updated soon) with cosine annealing, epochs=100, SGD optimizer \
+Got **95.4%** top-1 accuracy on CIFAR10 dataset till now, still tuning for best result (96%+)
 
 
 ## References
