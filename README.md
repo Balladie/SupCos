@@ -39,7 +39,7 @@ CIFAR10 for default, more dataset experiment coming soon
 ## Performance result
 Training result on stage1 model : ResNet50 encoder + projection layer) \
 I ran two seperate sequence learning for stage1 model, and then trained linear classifier. \
-\
+
 - First learning for stage1: Lr=0.6 with cosine annealing, epochs=300, SGD optimizer \
 ![ex_screenshot](./screenshot/stage1_lr_first.jpg)
 ![ex_screenshot](./screenshot/stage1_train_loss_first.jpg)
