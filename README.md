@@ -10,7 +10,6 @@ This repo is for implementation of:
 
 ## How to use
 Please be careful for the `batch_size` option: adjust it depending on your GPU memory. \
-Learning rate may not be optimized that much... (Processing) \
 
 #### Baseline model training and validation (ResNet50)
 ```
